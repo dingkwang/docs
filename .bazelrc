@@ -1,1 +1,1 @@
-# Let Bazel use the default compiler, which is gcc 
+ build --copt=-Werror=float-equal
