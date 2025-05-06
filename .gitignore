@@ -1,0 +1,49 @@
+# Bazel specific
+/bazel-*
+/external/
+/.bazelrc.user
+
+# C++ specific
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+*.out
+*.app
+*.gch
+*.pch
+
+# Compiled Object files
+*.slo
+*.lo
+
+# Dependency files
+*.d
+
+# Build directories
+/build/
+/bin/
+/lib/
+
+# CMake (in case you have CMake-related files alongside Bazel)
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+
+# Logs
+*.log
+log/
+
+# Editor specific
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Cache files
+__pycache__/
+*.py[cod] 
