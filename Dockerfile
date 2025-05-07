@@ -1,6 +1,6 @@
 FROM ubuntu:22.04
 
-# Install dependencies
+# Install dependencies (including git)
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
     build-essential \
@@ -32,12 +32,19 @@ RUN pipx ensurepath
 # Create a non-root user (for potential commands that require it)
 RUN useradd -ms /bin/bash bazeluser
 
-# Create the target directory for repo copy
-RUN mkdir -p /bazel_hello_world
+# Set up the preexisting repository
+WORKDIR /bazel_hello_world
+# Copies content of /data/dingkwang/CKT21662/bazel_hello_world into /bazel_hello_world
+COPY . .  
 
-# Copy project files to a workspace
-WORKDIR /home/bazeluser/app
-COPY . .
+# Ensure it's a git repository
+RUN git init && \
+    git config --global user.email "sweagent@example.com" && \
+    git config --global user.name "SWE-Agent Build" && \
+    # Add safe.directory to allow git operations by any user on this path
+    git config --global --add safe.directory /bazel_hello_world && \
+    git add . && \
+    git commit --allow-empty -m "Initial commit for preexisting image content"
 
 # Set environment variables for both root and bazeluser paths
 ENV PATH="/root/.local/bin:/home/bazeluser/.local/bin:${PATH}"
@@ -46,5 +53,5 @@ ENV PATH="/root/.local/bin:/home/bazeluser/.local/bin:${PATH}"
 RUN echo '#!/bin/bash\nexport PATH="/root/.local/bin:/home/bazeluser/.local/bin:${PATH}"\nexec swerex-remote $@' > /usr/local/bin/swerex-remote-wrapper && \
     chmod +x /usr/local/bin/swerex-remote-wrapper
 
-# Default command
+# Default command (will run from /bazel_hello_world)
 CMD ["bazel", "run", "hello_world"] 
