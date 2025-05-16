@@ -7,7 +7,8 @@ int main() {
     float b = 2.0f;
     float c = a + b;
     
-    if (c == 3.0f) {
+    const float epsilon = 0.0001f;
+    if (std::abs(c - 3.0f) < epsilon) {
         std::cout << "c is exactly 3.0f" << std::endl;
     }
     return 0;
